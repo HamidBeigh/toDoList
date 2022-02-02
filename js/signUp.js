@@ -1,12 +1,10 @@
-let headTags =
-    `<meta charset="utf-8">
+let headTags = `<meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>My Ist Project</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/styles.css">`;
 
-let signUpHtmlTags =
-        `<div class="container">
+let signUpHtmlTags = `<div class="container">
         <div class="row">
             <div class="text" style="text-align:center">
               <h2>Create Your Account<h2>
@@ -47,71 +45,74 @@ let signUpHtmlTags =
           </div>
           </div>`;
 
-  let signUpId = document.querySelector("body");
-    signUpId.innerHTML = signUpHtmlTags;
-  let selectHead = document.querySelector("head");
-      selectHead.innerHTML = headTags;
-  const myForm = document.getElementById("myForm");
-  myForm.addEventListener("submit",saveDataToStorage);
+let signUpId = document.querySelector("body");
+signUpId.innerHTML = signUpHtmlTags;
+let selectHead = document.querySelector("head");
+selectHead.innerHTML = headTags;
+const myForm = document.getElementById("myForm");
+myForm.addEventListener("submit", saveDataToStorage);
 
-  function passwordHash(string){
-    let inputPwd = [...string];
-    let convertPwd = [];
-      for(let i=0; i<inputPwd.length; i++){
-         convertPwd[i] = inputPwd[i].charCodeAt() + (i+1);
-      }
-    let outputPwd = [];
-    for(let j=0; j<convertPwd.length; j++){
-      outputPwd[j] = String.fromCharCode(convertPwd[j]);
-    }
-      return outputPwd.join("");
+function passwordHash(string) {
+  let inputPwd = [...string];
+  let convertPwd = [];
+  for (let i = 0; i < inputPwd.length; i++) {
+    convertPwd[i] = inputPwd[i].charCodeAt() + (i + 1);
   }
-
-
-  function saveDataToStorage(e){
-    e.preventDefault();
-    var fname = document.getElementById("fname").value;
-    var lname = document.getElementById("lname").value;
-    var email = document.getElementById("email").value;
-    var passWord = document.getElementById("password").value;
-    var checkbox = document.getElementById("checkbox");
-    function formValidation() {
-      let fieldEmty = true;
-      document.getElementById("error").innerHTML ="";
-      if(fname === ""){
-        document.getElementById("error").innerHTML += "* first name is Missing</br>";
-        fieldEmty = false;
-      }
-      if(lname === ""){
-        document.getElementById("error").innerHTML += "* last name is Missing</br>";
-        fieldEmty = false;
-      }
-      if(email === ""){
-        document.getElementById("error").innerHTML += "* email is Missing</br>";
-        fieldEmty = false;
-      }
-      if(passWord === ""){
-        document.getElementById("error").innerHTML += "* password is Missing</br>";
-        fieldEmty = false;
-      }
-      if(checkbox.checked === false){
-        document.getElementById("error").innerHTML += "* Terms of use not accepted.";
-        fieldEmty = false;
-      }
-     return fieldEmty;
-    }
-    if(formValidation() === true){
-      let password = passwordHash(passWord);
-    var newData = {fname, lname, email, password};
-
-      let  emtyArr = [];
-  if(localStorage.getItem("user") === null){
-     let emtyArrStr = JSON.stringify(emtyArr);
-    localStorage.setItem("user", emtyArrStr);
+  let outputPwd = [];
+  for (let j = 0; j < convertPwd.length; j++) {
+    outputPwd[j] = String.fromCharCode(convertPwd[j]);
   }
+  return outputPwd.join("");
+}
+
+function saveDataToStorage(e) {
+  e.preventDefault();
+  var fname = document.getElementById("fname").value;
+  var lname = document.getElementById("lname").value;
+  var email = document.getElementById("email").value;
+  var passWord = document.getElementById("password").value;
+  var checkbox = document.getElementById("checkbox");
+  function formValidation() {
+    let fieldEmty = true;
+    document.getElementById("error").innerHTML = "";
+    if (fname === "") {
+      document.getElementById("error").innerHTML +=
+        "* first name is Missing</br>";
+      fieldEmty = false;
+    }
+    if (lname === "") {
+      document.getElementById("error").innerHTML +=
+        "* last name is Missing</br>";
+      fieldEmty = false;
+    }
+    if (email === "") {
+      document.getElementById("error").innerHTML += "* email is Missing</br>";
+      fieldEmty = false;
+    }
+    if (passWord === "") {
+      document.getElementById("error").innerHTML +=
+        "* password is Missing</br>";
+      fieldEmty = false;
+    }
+    if (checkbox.checked === false) {
+      document.getElementById("error").innerHTML +=
+        "* Terms of use not accepted.";
+      fieldEmty = false;
+    }
+    return fieldEmty;
+  }
+  if (formValidation() === true) {
+    let password = passwordHash(passWord);
+    var newData = { fname, lname, email, password };
+
+    let emtyArr = [];
+    if (localStorage.getItem("user") === null) {
+      let emtyArrStr = JSON.stringify(emtyArr);
+      localStorage.setItem("user", emtyArrStr);
+    }
     let oldData = JSON.parse(localStorage.getItem("user"));
-    for(let i=0; i<oldData.length; i+=1){
-      if(oldData[i].email === email){
+    for (let i = 0; i < oldData.length; i += 1) {
+      if (oldData[i].email === email) {
         alert("user is already registered");
         return;
       }
@@ -120,7 +121,7 @@ let signUpHtmlTags =
     let oldDataStr = JSON.stringify(oldData);
     localStorage.setItem("user", oldDataStr);
     location.replace("log_in.html");
-  }else{
+  } else {
     document.getElementById("error").innerText;
   }
 }
